@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <canvas id="qr"></canvas>
+    <div id="displayView" class="topic" style="background-color: rgb(128, 128, 128); border: 3px solid #999; width: 300px; height: 100px;">
+                <div style="padding:20px">
+                                                                <canvas id="display" width="260" height="60"></canvas>
+                                                </div>
+    </div>
+   
+                                <script type="text/javascript" src="segment-display.js"></script>
+    <script src="qrious.js"></script>
+    <script>
+                function random_int(min, max) {
+                                                               return Math.round(Math.random() * (max - min) + min);
+                                                }
+                                               
+                                                function pad(n, p, width) {
+                                                                while(n.length < width)
+                                                                                n = p + n;
+                                                                return n;
+                                                }
+                                               
+      function update_window() {
+                value = "3.14159";
+                switch (random_int(1, 3)) {
+                                case 1:
+                                                display.pattern = "########";
+                                                digits = random_int(1, 8);
+                                                value = pad(String(random_int(Math.pow(10, digits - 1), Math.pow(10, digits) - 1)), ' ', 8);
+                                                break;
+                                case 2:
+                                                display.pattern = "##:##:##";
+                                                value1 = pad(String(random_int(00, 23)), ' ', 2);
+                                                value2 = pad(String(random_int(00, 59)), '0', 2);
+                                                value3 = pad(String(random_int(00, 59)), '0', 2);
+                                                value = value1 + ":" + value2 + ":" + value3;
+                                                break;
+                                case 3:
+                                                digits         = random_int(4, 7);
+                                                decimal_places = random_int(1, digits - 1);
+                                                major_places   = digits - decimal_places;
+                                               
+                                                pattern = '';
+                                                for (i = digits; i > 0; i--)
+                                                                if (i == major_places)
+                                                                                pattern = '.' + pattern;
+                                                                else
+                                                                                pattern = '#' + pattern;
+                                                display.pattern = pad(pattern, '#', 8);
+                                               
+                                                major_num   = random_int(0, Math.pow(10, major_places) - 1);
+                                                decimal_num = random_int(0, Math.pow(10, decimal_places) - 1);
+                                                //console.log(digits, major_places, decimal_places, display.pattern);
+                                                //console.log(major_num, decimal_num);                                           
+                                                value = pad(pad(String(major_num), ' ', major_places) + '.' + pad(String(decimal_num), '0', decimal_places), ' ', 8);
+                                                break;
+                                                                }
+                                                               
+                                                                display.displayAngle    = random_int(0, 10);
+                                                  display.digitHeight     = random_int(30, 50);
+                                                  display.digitWidth      = random_int(13, 23);
+                                                  display.digitDistance   = random_int(4, 8) / 2;
+                                                  display.segmentWidth    = random_int(1, 4);
+                                                  display.segmentDistance = random_int(2, 10) / 10;
+                                                  display.segmentCount    = 7;
+                                                  display.cornerType      = random_int(2, 4);
+                                                 
+                                                  colour_offset = 128;
+                                                  colour_off_r     = random_int(0, 15) + colour_offset;
+                                                  colour_off_hex_r = pad(colour_off_r.toString(16), '0', 2);
+                                                  colour_off_g     = random_int(0, 15) + colour_offset;
+                                                  colour_off_hex_g = pad(colour_off_g.toString(16), '0', 2);
+                                                  colour_off_b     = random_int(0, 15) + colour_offset;
+                                                  colour_off_hex_b = pad(colour_off_b.toString(16), '0', 2);
+                                                display.colorOff = "#" + colour_off_hex_r + colour_off_hex_g + colour_off_hex_b;
+                                                  //console.log(colour_off_hex_r + colour_off_hex_g + colour_off_hex_b);
+                                               
+                                                  colour_on_r      = colour_off_r - colour_offset;
+                                                  colour_on_hex_r = pad(colour_on_r.toString(16), '0', 2);
+                                                  colour_on_g      = colour_off_g - colour_offset;
+                                                  colour_on_hex_g = pad(colour_on_g.toString(16), '0', 2);
+                                                  colour_on_b      = colour_off_b - colour_offset;
+                                                  colour_on_hex_b  = pad(colour_on_b.toString(16), '0', 2);
+                                                               display.colorOn  = "#" + colour_on_hex_r + colour_on_hex_g + colour_on_hex_b;
+                                                //console.log(colour_on_hex_r + colour_on_hex_g + colour_on_hex_b);
+                                               
+                                                display.setValue(value);                                  
+                                                                qr.value = value;
+                                                                console.log(">" + value + "<");
+                      display.draw();
+                }
+                                                var display = new SegmentDisplay('display');
+                var qr = new QRious({
+                                                                                                                                                                element: document.getElementById('qr'),
+                                                                                                value: 1234
+                                                                                                });
+                                 
+                                                setInterval(update_window, 1000);
+                                </script>
+  </body>
+</html>
