@@ -23,8 +23,8 @@ def _train(path_to_train_tfrecords_file, num_train_examples, path_to_val_tfrecor
            path_to_train_log_dir, path_to_restore_checkpoint_file, training_options):
     batch_size = training_options['batch_size']
     initial_patience = training_options['patience']
-    num_steps_to_show_loss = 100
-    num_steps_to_check = 1000
+    num_steps_to_show_loss = 1000
+    num_steps_to_check = 10000
 
     with tf.Graph().as_default():
         image_batch, length_batch, digits_batch = Donkey.build_batch(path_to_train_tfrecords_file,
